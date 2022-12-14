@@ -9,7 +9,7 @@
 <h1>PDO - Check Connection</h1>
 
 <?php
-$query = " DELETE FROM `student` WHERE `ID` :ID";
+$query = "UPDATE `student` SET `NAME`= :NAME WHERE `ID` = :ID";
 $dns = "mysql:host=localhost;dbname=schooldb";
 $username = "root";
 $password = "Safi1994?";
@@ -19,13 +19,15 @@ try{
     $db = new PDO($dns , $username , $password);
     // Prepared Statement
     $statement = $db->prepare($query);
-    $statement->bindValue(':ID', '4',   PDO::PARAM_INT);
+
+    $statement->bindValue(':NAME', 'PETER',PDO::PARAM_STR);
+    $statement->bindValue(':ID', '1',   PDO::PARAM_INT);
 
     // Execute the Query
     if($statement->execute() ){
-        echo "Records Deleted Succesfully!";
+        echo "Records Updated Succesfully!";
     }else {
-        echo "Unable to Delete records!";
+        echo "Unable to Update records!";
     }
     // Close the Statement
     $statement->closeCursor();
