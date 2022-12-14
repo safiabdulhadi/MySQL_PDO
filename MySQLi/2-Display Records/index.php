@@ -1,35 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>MySQL PDO</title>
+<title>MySQLi</title>
 </head>
 
 <body>
 
-<h1>PDO - Check Connection</h1>
+<h1>MySQLi - Check Display</h1>
 
 <?php
+
+// $dns = "mysql:host=localhost;dbname=schooldb";
 $query = "SELECT * FROM student;";
-$dns = "mysql:host=localhost;dbname=schooldb";
+$hostname = "localhost";
+$dbname = "schooldb";
 $username = "root";
 $password = "Safi1994?";
 
 
 try{
-    $db = new PDO($dns , $username , $password);
-    // Prepared Statement
+    // Establish the connection
+    $db = new mysqli($hostname, $username , $password,$dbname);
 
-    $statement = $db->prepare($query);
+    // Check the connecdtion
+    if($db->connect_error){
+        die("Connection Failed " . $db->connect_error);
+    }
+    $result = $db->query($query);
 
-    // Execute the Query
-    $statement->execute();
-    // Loop the records
-    while($student = $statement->fetch() ){
+    while($student = $result->fetch_assoc() ){
         echo " ID: " . $student["ID"] . "<br>";
         echo " NAME: " . $student["NAME"] . "<br>";
     }
-    // Close the Statement
-    $statement->closeCursor();
+
+
+    // Close the connection
+    $db->close();
+
 }catch(Exception $e){
 $error_message = $e->getMessage();
 
